@@ -1,4 +1,4 @@
-const mongoose=require('mongoose');
+
 const bcrypt=require('bcrypt');
 const connectDB=require('./config/db');
 const User=require('./models/User');
