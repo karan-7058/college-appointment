@@ -1,6 +1,12 @@
 const express= require('express');
 const session=require('express-session');
 const connectDB=require('./config/db');
+const authRoutes=require('./routes/authRoutes');
+const professorRoutes=require('./routes/professorRoutes');
+const studentRoutes=require('./routes/studentRoutes');
+
+
+
 
 const app=express();
 
@@ -31,6 +37,13 @@ app.use(session ({
         httpOnly:true,     
     }
 }));
+
+
+app.use('/auth',authRoutes);
+app.use('/professor',professorRoutes);
+app.use('/student',studentRoutes);
+
+
 
 app.get('/' , (req, res)=>{
     res.send('hello karan');
