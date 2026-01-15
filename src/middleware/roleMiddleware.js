@@ -7,7 +7,7 @@ const requireProfessor=(req,res,next)=>{
 
 const requireStudent=(req , res , next)=>{
     if(req.session.user.role!=='student'){
-        return res.status(403).json("student access only and only student can book appointment")
+        return res.status(403).json(" only student can view their appointment and only student can book appointment")
     }
     next();
 }
