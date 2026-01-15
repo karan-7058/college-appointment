@@ -34,4 +34,41 @@ const bookAppointment=async(req, res)=>{
 
 }
 
-module.exports={bookAppointment};
+const myAppointment=async(req, res)=>{
+
+    const appointments=await Appointment.find({
+        student:req.session.user.id,
+        status:'booked'
+    })
+
+    res.json({
+        appointments
+    })
+}
+
+const deleteAppointment = async (req, res) => {
+    const { appointmentId } = req.params;
+
+    const appointment = await Appointment.findOne({
+        _id: appointmentId,
+        professor: req.session.user.id,
+        status: 'booked'
+    });
+
+    if (!appointment) {
+        return res.status(404).json({ message: 'appointment not found' });
+    }
+
+    appointment.status = 'cancelled';
+    await appointment.save();
+
+    const availability = await Availability.findById(appointment.Availability);
+    if (availability) {
+        availability.isBooked = false;
+        await availability.save();
+    }
+
+    res.json({ message: 'appointment cancelled successfully' });
+}
+
+module.exports={bookAppointment , myAppointment, deleteAppointment};
